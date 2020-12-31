@@ -172,6 +172,85 @@ function getGifURL() {
         }
     };
 
+        // Update player stats
+        function updateStats() {
+
+            // console.log("Updating STATS");
+    
+            $("#mode_lbl").text(mode.toLocaleUpperCase() + " MODE");
+    
+            if (!finishGame) {
+                $("#pairsm").text(pairsMatched);
+                $("#tries").text(tries);
+                $("#level").text(level);
+    
+            } else {
+                // If all pairs have been found in a game
+    
+                // Stop countdown timer
+                timerStop();
+    
+                timeUsed = timeToBeat - time;
+                overallTime = overallTime + timeUsed;
+                overallTries = overallTries + tries;
+                level = pairs - 1;
+    
+                // Prepare "you found all pairs" message on GameUpdate modal:
+    
+                // Clear all content
+                $("#updateText").html("");
+    
+                // Add the star image
+                var img = $("<img>").attr("src", "assets/images/star.png").attr("id", "updateImage").appendTo($("#updateText"));
+    
+                // Set the massage
+                var msg = $("<div>").html("<h5>YOU FOUND ALL <br> THE MATCHES!</h5>");
+    
+                // Show the PLAY AGAIN button from Game Update modal
+                $("#playAgain").show();
+    
+                // Hide the PLAY NEXT button from Game Update modal
+                $("#playNext").hide();
+    
+                if (mode === 'challenge') {
+    
+                    // Hide the PLAY AGAIN button from Game Update modal
+                    $("#playAgain").hide();
+    
+                    if (level === 10) { // All levels completed on CHALLENGE mode.
+                        // console.log("HERE");
+    
+                        // Set the massage
+                        msg = $("<div>").html("<h5>YOU FOUND ALL<br>THE MATCHES ON<br>ALL LEVELS!</h5>").appendTo($("#updateText"));
+    
+                    } else if (level < 9) { // Game done for CHALLENGE modes:
+    
+                        // Set the massage
+                        msg = $("<div>").html("<h5>YOU FINISHED LEVEL " + level + "<br>GO TO THE NEXT ONE</h5>").appendTo($("#updateText"));
+    
+                        // Show the PLAY NEXT button from Game Update modal
+                        $("#playNext").show();
+    
+                    }
+                } else { // Game done for EASY and TIMED modes
+    
+                }
+    
+                // Updload the latest user data to Firebase
+                uploadData();
+    
+                // Append message to modal
+                $("#updateText").append(msg);
+    
+                // Display Game Update modal
+                $("#modalGameUpdate").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
+        };
+    
+
     // Player selects how many pairs to play with
     $("#play").click(function () {
 
