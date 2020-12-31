@@ -1,12 +1,21 @@
-// Superhero API
+// Use the API to get the URL to the GIFs used on the card's front
+function getGifURL() {
+    // Empty array with URL of cards
+    cardsArray = [];
 
-const APIKey = '10161297457820113';
+    // Superhero API
 
-var queryURL = `https://cors-anywhere.herokuapp.com/http://superheroapi.com/api.php/${APIKey}/search/man`;
+    const APIKey = '10161297457820113';
 
-$.ajax({
-    url: queryURL,
-    method: "GET"
-}).then(function (response) {
-    console.log(response)
-})
+    var queryURL = `https://cors-anywhere.herokuapp.com/http://superheroapi.com/api.php/${APIKey}/search/man`;
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        console.log(response)
+    })
+}
+
+// Get the URL to the GIFs
+getGifURL();
