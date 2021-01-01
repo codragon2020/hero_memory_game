@@ -1,11 +1,10 @@
-/* General styles */
+/* Welcome page styles */
 
 body {
     text-align: center;
     background-color: #D1F8FF;
     font-family: 'Barlow Condensed', sans-serif;
     line-height: normal;
-
 }
 
 #header {
@@ -29,8 +28,6 @@ form {
 label {
     margin: 10px;
 }
-
-/* Welcome page styles */
 
 #app-logo-img {
     width: 353px !important;

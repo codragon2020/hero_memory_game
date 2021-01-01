@@ -9,6 +9,78 @@ var pairsMatched = 0; // Number of pairs matched in a game
 
 $(document).ready(function () {
 
+   // Start a game
+   function startGame(pairs) {
+
+    // Reseting variables for a new game
+    finishGame = false;
+    tries = 0;
+    pairsMatched = 0;
+    urlArray = [];
+    indexArray = [];
+
+    console.log("Starting level " + level + " in mode " + mode);
+
+    // Setting variables for the TIMED and CHALLENGE modes 
+    if (mode === 'timed' || mode === 'challenge') {
+
+        // Calculate level numer based on the number of PAIRS
+        level = pairs - 1;
+
+        // Calculate amount of time per game based on the number of PAIRS
+        switch (parseInt(pairs)) {
+            case 2:
+                timeToBeat = 20;
+                break;
+
+            case 3:
+                timeToBeat = 32;
+                break;
+
+            case 4:
+                timeToBeat = 39;
+                break;
+
+            case 5:
+                timeToBeat = 48;
+                break;
+
+            case 6:
+                timeToBeat = 59;
+                break;
+
+            case 7:
+                timeToBeat = 72;
+                break;
+
+            case 8:
+                timeToBeat = 87;
+                break;
+
+            case 9:
+                timeToBeat = 104;
+                break;
+
+            case 10:
+                timeToBeat = 123;
+                break;
+        }
+
+        // console.log("TIme for level: " + level + " is " + time);
+
+        time = timeToBeat;
+    };
+
+    // Get the URL to the GIFs
+    getGifURL();
+
+    //Update screen
+    updateScreen()
+
+    // Log all variables... use for troubleshooting only
+    // allVariablesInfo()
+};
+
     // Use the API to get the URL to the GIFs used on the card's front
     function getGifURL() {
         // Empty array with URL of cards
@@ -126,77 +198,7 @@ $(document).ready(function () {
     
         };
 
-   // Start a game
-   function startGame(pairs) {
 
-    // Reseting variables for a new game
-    finishGame = false;
-    tries = 0;
-    pairsMatched = 0;
-    urlArray = [];
-    indexArray = [];
-
-    console.log("Starting level " + level + " in mode " + mode);
-
-    // Setting variables for the TIMED and CHALLENGE modes 
-    if (mode === 'timed' || mode === 'challenge') {
-
-        // Calculate level numer based on the number of PAIRS
-        level = pairs - 1;
-
-        // Calculate amount of time per game based on the number of PAIRS
-        switch (parseInt(pairs)) {
-            case 2:
-                timeToBeat = 20;
-                break;
-
-            case 3:
-                timeToBeat = 32;
-                break;
-
-            case 4:
-                timeToBeat = 39;
-                break;
-
-            case 5:
-                timeToBeat = 48;
-                break;
-
-            case 6:
-                timeToBeat = 59;
-                break;
-
-            case 7:
-                timeToBeat = 72;
-                break;
-
-            case 8:
-                timeToBeat = 87;
-                break;
-
-            case 9:
-                timeToBeat = 104;
-                break;
-
-            case 10:
-                timeToBeat = 123;
-                break;
-        }
-
-        // console.log("TIme for level: " + level + " is " + time);
-
-        time = timeToBeat;
-    };
-
-    // Get the URL to the GIFs
-    getGifURL();
-
-    //Update screen
-    updateScreen()
-
-    // Log all variables... use for troubleshooting only
-    // allVariablesInfo()
-};
 
 
     // Update the screen
