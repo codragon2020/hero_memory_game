@@ -1,3 +1,8 @@
+// VARIABLES --------------------------------------------
+
+//      OBJECTS
+var intervalId; // Holds setInterval that runs the stopwatch
+
 //      ARRAYS
 var cardsArray = []; // Will hold the URLs fr all cards in te grid
 var urlArray = []; // Will hold the URL of card one and card two
@@ -12,8 +17,21 @@ var secondPick = ""; // Index of the second card picked
 //      Number/Integers
 var pairs = 2; // Pair of cards that will be in the grid
 var pairsMatched = 0; // Number of pairs matched in a game
+var tries = 0; // Number of pairs fliped in a game
+var timeToBeat = 20; // Time to beat every game
+var time = 0; // TIme used to start the timer - comes from timeToBeat
+var timeUsed = 0; // Time used to finish the last game
+var level = pairs - 1; // Number of games played
+var overallTime = 0; // Added time used for the CHALLENGE mode
+var overallTries = 0; // Added number of tries used for the CHALLENGE mode
+var leaderTally = 10; // Number of players shown on leader board modal
 
+//      BOOLEAN
+var timer = false; // The game requires to show and use timer
+var challenge = false; // The player is on 'challenge' mode
+var finishGame = false; // TRUE if all pairs have been found in a game
 
+// ------------------------------------------------------------
 
 $(document).ready(function () {
 
@@ -344,9 +362,6 @@ $(document).ready(function () {
     
                 }
     
-                // Updload the latest user data to Firebase
-                uploadData();
-    
                 // Append message to modal
                 $("#updateText").append(msg);
     
@@ -544,6 +559,93 @@ $(document).ready(function () {
         };
 
     });
+
+    // ********************************
+    // **         TIME logic         **
+    // ********************************
+
+    function timerRun() {
+
+        // Stop timer
+        timerStop();
+
+        // Set interval to 1 second
+        clearInterval(intervalId);
+        intervalId = setInterval(decrement, 1000);
+    };
+
+    function timerStop() {
+        // Stop the countdown - leave the last time
+        clearInterval(intervalId);
+    };
+
+    function decrement() {
+
+        //  Decrease time by one.
+        time--;
+
+        // Display time (if hidden)
+        $("#clock").css("visibility", "visible");
+
+        // Update the time 
+        $("#clock").text(fancyTimeFormat(time));
+
+        //  When run out of time...
+        if (time <= 0) {
+
+            // Prepare "out of time" message on GameUpdate modal:
+
+            // Clear all content
+            $("#updateText").html("");
+
+            // Add the clock image
+            var img = $("<img>").attr("src", "assets/images/clock.png").attr("id", "updateImage").appendTo($("#updateText"));
+
+            // Set the massage
+            var msg = $("<div>").html("<h5>YOUR TIME<br>IS UP!</h5>").appendTo($("#updateText"));
+
+            // Hide the PLAY AGAIN button from Game Update modal
+            $("#playAgain").hide();
+
+            // Hide the PLAY NEXT button from Game Update modal
+            $("#playNext").hide();
+
+            // Display ALERT modal
+            $("#modalGameUpdate").modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            // Stop timer
+            timerStop();
+
+            // Updload the latest user data to Firebase
+            uploadData();
+
+        }
+    };
+
+    function fancyTimeFormat(time) {
+        // Hours, minutes and seconds
+        // ~~ is a shorthand for Math.floor
+
+        var hrs = ~~(time / 3600);
+        var mins = ~~((time % 3600) / 60);
+        var secs = ~~time % 60;
+
+        // Output like "1:01" or "4:03:59" or "123:03:59"
+        var ret = "";
+
+        if (hrs > 0) {
+            ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+        }
+
+        ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+        ret += "" + secs;
+        return ret;
+    };
+
+    /*************************************************/
 
 // Get the URL to the GIFs
 getGifURL();
