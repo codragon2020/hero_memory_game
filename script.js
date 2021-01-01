@@ -2,31 +2,72 @@
 var mode = ''; // Type of game selected [EASY, TIMED, CHALLENGE]
 var userName = ''; // User's name
 
-
+var pairs = 2; // Pair of cards that will be in the grid
 var pairsMatched = 0; // Number of pairs matched in a game
 
 
 
 $(document).ready(function () {
 
-// Use the API to get the URL to the GIFs used on the card's front
-function getGifURL() {
-    // Empty array with URL of cards
-    cardsArray = [];
+    // Use the API to get the URL to the GIFs used on the card's front
+    function getGifURL() {
+        // Empty array with URL of cards
+        cardsArray = [];
 
-    // Superhero API
+        // Superhero API
+        const APIKey = '10161297457820113';
 
-    const APIKey = '10161297457820113';
+        var queryURL = `https://cors-anywhere.herokuapp.com/http://superheroapi.com/api.php/${APIKey}/search/man`;
 
-    var queryURL = `https://cors-anywhere.herokuapp.com/http://superheroapi.com/api.php/${APIKey}/search/man`;
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            console.log(response)
+            
+            // Get the URL of the image into the cardsArray... twice!
+            // note [22,23,50,57] are numbers to avoid, no Imgs available
 
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function (response) {
-        console.log(response)
-    })
-}
+            // Build cardsArray with URL to character images
+            for (let p = 0; p < pairs; p++) {
+
+                // Generate random number between 1 and 63 - to randomize character image
+                var index = Math.floor(Math.random() * 63) + 1;
+
+                // Confirm the index is not one of the ones with missing images
+                switch (index) {
+                    case 22:
+                    case 23:
+                    case 50:
+                    case 57:
+                        // No images for these indexes... try again.
+                        console.log("Selected: " + index + "  Trying again");
+
+                        // Reduce the iteration variable to get a new value
+                        p--;
+                        break;
+
+                    default:
+                        // For all other cases push the URL to the image into cardsArray... twice! 
+                        cardsArray.push(response.results[index].image.url);
+                        cardsArray.push(response.results[index].image.url);
+                        console.log('This is the cardsArray', cardsArray)
+
+                        break;
+                }
+            }
+
+            // Randomize the positions of the cardsArray
+            // shuffleArray(cardsArray);
+
+            // Show the BACK of the cards
+            // displayCards();
+        });
+        //////////////////////////////////////////////////////////////
+
+    };
+
+    
 
    // Start a game
    function startGame(pairs) {
@@ -38,7 +79,7 @@ function getGifURL() {
     urlArray = [];
     indexArray = [];
 
-    // console.log("Starting level " + level + " in mode " + mode);
+    console.log("Starting level " + level + " in mode " + mode);
 
     // Setting variables for the TIMED and CHALLENGE modes 
     if (mode === 'timed' || mode === 'challenge') {
