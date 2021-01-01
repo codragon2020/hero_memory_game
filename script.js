@@ -543,7 +543,7 @@ $(document).ready(function () {
         };
 
     });
-    
+
     // Player select how many pairs to play with
     $("#play").click(function () {
 
@@ -558,6 +558,20 @@ $(document).ready(function () {
         // Start game
         startGame(pairs);
     });
+
+    // Play next game
+    $("#playNext").on("click", function () {
+
+        // Hide the Game Update modal
+        $("#modalGameUpdate").modal("hide");
+
+        // Increase number of pairs
+        pairs++;
+
+        // Start game
+        startGame(pairs);
+    });
+    
    
 
     // ********************************
