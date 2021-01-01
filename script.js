@@ -1,7 +1,15 @@
+//      ARRAYS
+var cardsArray = []; // Will hold the URLs fr all cards in te grid
+var urlArray = []; // Will hold the URL of card one and card two
+var indexArray = []; // Will hold the index of card one and card two
 
-var mode = ''; // Type of game selected [EASY, TIMED, CHALLENGE]
+//      STRINGS/CHAR
 var userName = ''; // User's name
+var mode = ''; // Type of game selected [EASY, TIMED, CHALLENGE]
+var firstPick = ""; // Index of the first card picked
+var secondPick = ""; // Index of the second card picked
 
+//      Number/Integers
 var pairs = 2; // Pair of cards that will be in the grid
 var pairsMatched = 0; // Number of pairs matched in a game
 
@@ -350,6 +358,97 @@ $(document).ready(function () {
             }
         };
     
+    // ********************************
+    // **        BUTTON logic        **
+    // ********************************
+
+    // Click on back of card
+    $("#gifs").on("click", ".staticgif", function () {
+
+        if (secondPick != "") {
+            return;
+        }
+
+        // Save the ID of the clicked card
+        // Making sure to remove the first 4 characters
+        var choice = this.id.substr(4);
+
+        // If the same card is clicked twice do nothing
+        if (this.id.substr(4) === firstPick) {
+            // console.log("repeated");
+            return;
+        }
+
+        if (firstPick === "") {
+            firstPick = choice;
+        } else if (firstPick != "" && secondPick === "") {
+
+            secondPick = choice;
+        }
+
+        // Hide the back of the card
+        $("#back" + choice).hide();
+
+        // Show the front of the card
+        $("#frnt" + choice).show();
+
+        // Get the URL for the card
+        urlArray.push(this.dataset.url)
+
+        // Get the INDEX for the card
+        indexArray.push(choice);
+
+        if (firstPick != "" && secondPick != "") {
+            // Add a try to the list
+            tries++;
+
+            // Wait some time to show both cards and then follow up
+            setTimeout(function () {
+                if (urlArray[0] === urlArray[1]) {
+                    // The cards match, hide both cards
+
+                    // console.log("CARDS MATCH!!");
+
+                    // Hiding the front of the card
+                    $("#frnt" + indexArray[0]).css("visibility", "hidden");
+                    $("#frnt" + indexArray[1]).css("visibility", "hidden");
+
+                    // Add a pair matched to the list
+                    pairsMatched++;
+
+                    if (pairsMatched * 2 === cardsArray.length) {
+
+                        // console.log("FINISHED ALL CARDS!");
+                        finishGame = true;
+                    }
+
+                } else {
+                    // The cards dont match, flip tham back
+                    // console.log("Not a match");
+
+                    // Hide the back of the card
+                    $("#back" + indexArray[0]).show();
+                    $("#frnt" + indexArray[0]).hide();
+                    $("#back" + indexArray[1]).show();
+                    $("#frnt" + indexArray[1]).hide();
+                }
+
+                // Empty the URL and index array
+                urlArray = [];
+                indexArray = [];
+
+                // // Switch back that the first card was picked
+                firstPick = "";
+                secondPick = "";
+
+                // Update the game stats
+                updateStats();
+
+            }, 2000); // Wait this many miliseconds after the second card is picked
+
+        }
+
+    });    
 
     // Player selects how many pairs to play with
     $("#play").click(function () {
