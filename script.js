@@ -301,7 +301,7 @@ $(document).ready(function () {
         // Update player stats
         function updateStats() {
 
-            // console.log("Updating STATS");
+            console.log("Updating STATS");
     
             $("#mode_lbl").text(mode.toLocaleUpperCase() + " MODE");
     
@@ -465,44 +465,28 @@ $(document).ready(function () {
 
     });    
 
-    // Player selects how many pairs to play with
-    $("#play").click(function () {
-
-        // Get the # of pairs from the input form
-        pairs = parseInt($('#pairsInput').val().trim());
-
-        console.log("Selected to play with " + pairs + " pairs.");
-
-        // Hide the modal
-        $("#modalPairs").modal("hide");
-
-        // Start game
-        startGame(pairs);
-    });
-
     // Player selects play mode
     $(".btnPlay").on("click", function (e) {
         e.preventDefault();
 
-        // If player has not entered name or country show elart message
-        if ($('#nameInput').val() === "" || $('#countryInput').val() === "") {
-
+        // If player has not entered name or country show alert message
+        if ($('#nameInput').val() === "") {
+            console.log("username input is empty")
             // Set error message on ALERT modal
-            $("#errorText").text("YOU NEED TO ENTER A USERNAME AND A SELECT A VALID COUNTRY");
+            $("#errorText").text("YOU NEED TO ENTER A USERNAME");
 
             // Display ALERT modal
             $("#modalAlert").modal({
                 backdrop: 'static',
                 keyboard: false
             });
-
+            console.log("this is alert returned")
             // Exit
             return;
         };
 
-        // Save username 
+        // Save username and user country localy
         userName = $('#nameInput').val().trim();
-
 
         // Get the mode from the button selected
         mode = this.id;
@@ -559,6 +543,22 @@ $(document).ready(function () {
         };
 
     });
+    
+    // Player select how many pairs to play with
+    $("#play").click(function () {
+
+        // Get the # of pairs from the input form
+        pairs = parseInt($('#pairsInput').val().trim());
+
+        // console.log("Seelcted to play with " + pairs + " pairs.");
+
+        // Hide the modal
+        $("#modalPairs").modal("hide");
+
+        // Start game
+        startGame(pairs);
+    });
+   
 
     // ********************************
     // **         TIME logic         **
