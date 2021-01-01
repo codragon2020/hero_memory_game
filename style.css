@@ -72,3 +72,25 @@ label {
 #game {
     margin-top: 50px;
 }
+
+/* Makes playing area responsive to smaller screens */
+@media screen and (max-width: 768px) {
+
+    #app-logo-img {
+        width: 150px !important;
+    }
+
+    .staticgif {
+        width: 51px;
+        height: 86px;
+    }
+
+    #gifBox {
+        width: 300px;
+    }
+
+    .col-5 {
+        margin-top: 330px;
+    }
+
+}
