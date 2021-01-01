@@ -69,7 +69,7 @@ $(document).ready(function () {
     urlArray = [];
     indexArray = [];
 
-    console.log("Starting level " + level + " in mode " + mode);
+    // console.log("Starting level " + level + " in mode " + mode);
 
     // Setting variables for the TIMED and CHALLENGE modes 
     if (mode === 'timed' || mode === 'challenge') {
@@ -145,7 +145,7 @@ $(document).ready(function () {
             url: queryURL,
             method: "GET"
         }).then(function (response) {
-            console.log(response)
+            // console.log(response)
             
             // Get the URL of the image into the cardsArray... twice!
             // note [22,23,50,57] are numbers to avoid, no Imgs available
@@ -173,7 +173,7 @@ $(document).ready(function () {
                         // For all other cases push the URL to the image into cardsArray... twice! 
                         cardsArray.push(response.results[index].image.url);
                         cardsArray.push(response.results[index].image.url);
-                        console.log('This is the cardsArray', cardsArray)
+                        // console.log('This is the cardsArray', cardsArray)
 
                         break;
                 }
@@ -253,8 +253,7 @@ $(document).ready(function () {
 
     // Update the screen
     function updateScreen() {
-
-        console.log("Updating SCREEN");
+        // console.log("Updating SCREEN");
 
         $("#pairsm").text(pairsMatched);
         $("#tries").text(tries);
@@ -262,7 +261,7 @@ $(document).ready(function () {
 
         switch (mode) {
             case 'easy': // EASY mode
-                console.log("EASY MODE");
+                // console.log("EASY MODE");
                 $("#welcome").hide();
                 $("#game").show();
 
@@ -277,7 +276,7 @@ $(document).ready(function () {
                 break;
 
             case 'timed': // TIMED mode
-                console.log("TIMED MODE");
+                // console.log("TIMED MODE");
                 $("#welcome").hide();
                 $("#game").show();
 
@@ -292,7 +291,7 @@ $(document).ready(function () {
                 break;
 
             case 'challenge': // CHALLENGE mode
-                console.log("CHALLENGE MODE");
+                // console.log("CHALLENGE MODE");
                 $("#welcome").hide();
                 $("#game").show();
 
@@ -307,7 +306,7 @@ $(document).ready(function () {
                 break;
 
             default: // NO mode... first load
-                console.log("DEFAULT MODE");
+                // console.log("DEFAULT MODE");
 
                 $('#nameInput').val(userName);
 
@@ -324,8 +323,7 @@ $(document).ready(function () {
 
         // Update player stats
         function updateStats() {
-
-            console.log("Updating STATS");
+            // console.log("Updating STATS");
     
             $("#mode_lbl").text(mode.toLocaleUpperCase() + " MODE");
     
@@ -445,7 +443,6 @@ $(document).ready(function () {
             setTimeout(function () {
                 if (urlArray[0] === urlArray[1]) {
                     // The cards match, hide both cards
-
                     // console.log("CARDS MATCH!!");
 
                     // Hiding the front of the card
@@ -495,7 +492,7 @@ $(document).ready(function () {
 
         // If player has not entered name or country show alert message
         if ($('#nameInput').val() === "") {
-            console.log("username input is empty")
+            // console.log("username input is empty")
             // Set error message on ALERT modal
             $("#errorText").text("YOU NEED TO ENTER A USERNAME");
 
@@ -504,7 +501,6 @@ $(document).ready(function () {
                 backdrop: 'static',
                 keyboard: false
             });
-            console.log("this is alert returned")
             // Exit
             return;
         };
@@ -574,7 +570,7 @@ $(document).ready(function () {
         // Get the # of pairs from the input form
         pairs = parseInt($('#pairsInput').val().trim());
 
-        // console.log("Seelcted to play with " + pairs + " pairs.");
+        // console.log("Selected to play with " + pairs + " pairs.");
 
         // Hide the modal
         $("#modalPairs").modal("hide");
@@ -582,6 +578,21 @@ $(document).ready(function () {
         // Start game
         startGame(pairs);
     });
+
+    // Player selects to play again after the game ended
+    $("#playAgain").click(function () {
+
+        // Reset variables - FALSE = keep player name and country
+        freshStart(false);
+
+        // Hide the Game Update modal
+        $("#modalGameUpdate").modal("hide");
+
+        // Update screen
+        updateScreen();
+
+    });
+
 
     // Quit the current game - and return to welcome screen
     $("#quitButton").click(function () {
@@ -610,7 +621,17 @@ $(document).ready(function () {
         startGame(pairs);
     });
     
-   
+    // Show instructions
+    $("#instButton").on("click", function () {
+
+        // Show modalInstructions
+        $("#modalInstructions").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+    });
+
 
     // ********************************
     // **         TIME logic         **
@@ -670,9 +691,6 @@ $(document).ready(function () {
 
             // Stop timer
             timerStop();
-
-            // Updload the latest user data to Firebase
-            uploadData();
 
         }
     };
