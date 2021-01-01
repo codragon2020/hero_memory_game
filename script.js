@@ -35,6 +35,30 @@ var finishGame = false; // TRUE if all pairs have been found in a game
 
 $(document).ready(function () {
 
+    // Reset variables for a new game
+    function freshStart(full) {
+
+        if (full) { // Clear username
+            userName = "";
+        };
+
+        mode = "";
+        pairs = 2;
+        tries = 0;
+        timeToBeat = 20;
+        time = 0;
+        timeUsed = 0;
+        level = 1;
+        pairsMatched = 0;
+        overallTime = 0;
+        overallTries = 0;
+        timer = false;
+        challenge = false;
+        finishGame = false;
+        urlArray = [];
+        indexArray = [];
+    }
+
    // Start a game
    function startGame(pairs) {
 
@@ -459,7 +483,7 @@ $(document).ready(function () {
                 // Update the game stats
                 updateStats();
 
-            }, 2000); // Wait this many miliseconds after the second card is picked
+            }, 500); // Wait this many miliseconds after the second card is picked
 
         }
 
@@ -557,6 +581,20 @@ $(document).ready(function () {
 
         // Start game
         startGame(pairs);
+    });
+
+    // Quit the current game - and return to welcome screen
+    $("#quitButton").click(function () {
+
+        // Reset variables - FALSE = keep player name
+        freshStart(false);
+
+        // Stop countdown timer
+        timerStop();
+
+        // Update screen
+        updateScreen();
+
     });
 
     // Play next game
