@@ -623,12 +623,14 @@ $(document).ready(function () {
     
     // Show instructions
     $("#instButton").on("click", function () {
+        console.log("show Instruction modal");
 
         // Show modalInstructions
         $("#modalInstructions").modal({
             backdrop: 'static',
             keyboard: false
         });
+        console.log("show Instruction modal");
 
     });
 
