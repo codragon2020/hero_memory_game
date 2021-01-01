@@ -61,13 +61,70 @@ $(document).ready(function () {
             // shuffleArray(cardsArray);
 
             // Show the BACK of the cards
-            // displayCards();
+            displayCards();
         });
         //////////////////////////////////////////////////////////////
 
     };
 
+        // Show the cards in the board
+        function displayCards() {
+
+            // Resize the container of the cards
+            switch (parseInt(pairs)) {
+                case 2:
+                    // For 2 pairs only (4 cards)
+                    var boxWidth = 250;
+                    break;
     
+                case 3, 4:
+                    // For 3 pairs (6 cards) and 4 pairs (8 cards)
+                    var boxWidth = 370;
+                    break;
+    
+                default:
+                    // For 5 pairs or more
+                    var boxWidth = 490;
+                    break;
+            }
+    
+            //console.log("Pairs: " + pairs + "   Width: " + boxWidth);
+    
+            // Set the with of the cards grid
+            $("#gifBox").css("max-width", boxWidth);
+    
+            // Remove all the existing cards
+            $("#gifs").html("");
+    
+            // For each GIF append an element to the DOM
+            for (var c in cardsArray) {
+    
+                // Create a CARD div
+                var cardDiv = $("<div>").addClass("card m-2");
+    
+                // Append the character image to the front of the card, but HIDE this image - this to mimic the fact of the card being "facing donw"
+                var cardImg = $("<img>").attr("src", cardsArray[c]).attr("id", "frnt" + c).css("display", "none").addClass("staticgif card-img-top").appendTo(cardDiv);
+    
+                // Append the image of the back if the card - this to mimic the fact of the card being "facing donw"
+                var cardback = $("<img>").attr("src", "./assets/images/card_back.png").attr("id", "back" + c).attr("data-url", cardsArray[c]).addClass("staticgif card-img-top").appendTo(cardDiv);
+    
+                // Append each card
+                $("#gifs").append(cardDiv);
+            };
+    
+            // Start the countdown clock for the TIMED and CHALLENGE modes 
+            if (mode === 'timed' || mode === 'challenge') {
+                // console.log("calling the clock with " + time + " seconds");
+    
+                timerRun(time);
+    
+                $("#box-clock").show();
+    
+            } else {
+    
+            };
+    
+        };
 
    // Start a game
    function startGame(pairs) {
