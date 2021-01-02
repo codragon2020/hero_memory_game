@@ -334,7 +334,9 @@ $(document).ready(function () {
     
             } else {
                 // If all pairs have been found in a game
-    
+                $("#pairsm").text(pairsMatched);
+                $("#tries").text(tries);
+
                 // Stop countdown timer
                 timerStop();
     
@@ -381,9 +383,9 @@ $(document).ready(function () {
     
                     }
                 } else { // Game done for EASY and TIMED modes
-    
+
                 }
-    
+               
                 // Append message to modal
                 $("#updateText").append(msg);
     
