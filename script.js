@@ -636,6 +636,23 @@ $(document).ready(function () {
 
     });
 
+    // Show leader board
+    $("#leaderButton").on("click", function () {
+
+        // Hide the Game Update modal
+        $("#modalGameUpdate").modal("hide");
+
+        // Set the text of the button to be the same as the mode selected
+        $("#dropdownMenuButton").text(mode.toUpperCase() + " MODE");
+
+        // Show modalLeaderboard
+        $("#modalLeaderboard").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+    });
+
 
     // ********************************
     // **         TIME logic         **
