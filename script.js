@@ -396,6 +396,43 @@ $(document).ready(function () {
                 });
             }
         };
+
+        function leaderBoardUpdate() {
+            // Clear the previous table
+            $("#leaderBody").html("");
+
+            var finalScore = {
+                username: userName,
+                score: tries
+            }
+            // console.log("this is the final score", finalScore);
+
+            // Stores the scores in localStorage
+            var allScores = localStorage.getItem("allScores");
+            if (allScores === null) {
+                allScores = [];
+            } else {
+                allScores = JSON.parse(allScores);
+            }
+            allScores.push(finalScore);
+            var newScore = JSON.stringify(allScores);
+            localStorage.setItem("allScores", newScore);
+            console.log(newScore)
+
+            // Retreives localStorage 
+            var allScores = localStorage.getItem("allScores");
+            allScores = JSON.parse(allScores);
+            console.log(allScores)
+            if (allScores !== null) {
+
+                for (var i = 0; i < allScores.length; i++) {
+                    var createLi = document.createElement("li");
+                    createLi.textContent = allScores[i].username + " " + allScores[i].score;
+                    leaderBody.appendChild(createLi);
+
+                }
+            }
+        }
     
     // ********************************
     // **        BUTTON logic        **
@@ -458,6 +495,7 @@ $(document).ready(function () {
 
                         // console.log("FINISHED ALL CARDS!");
                         finishGame = true;
+                        leaderBoardUpdate();
                     }
 
                 } else {
@@ -639,41 +677,6 @@ $(document).ready(function () {
     // Show leader board
     $("#leaderButton").on("click", function () {
        
-        // Clear the previous table
-        $("#leaderBody").html("");
-
-        var finalScore = {
-            username: userName,
-            score: tries
-        }
-        // console.log("this is the final score", finalScore);
-
-        // Stores the scores in localStorage
-        var allScores = localStorage.getItem("allScores");
-        if (allScores === null) {
-            allScores = [];
-        } else {
-            allScores = JSON.parse(allScores);
-        }
-        allScores.push(finalScore);
-        var newScore = JSON.stringify(allScores);
-        localStorage.setItem("allScores", newScore);
-        console.log(newScore)
-
-        // Retreives localStorage 
-        var allScores = localStorage.getItem("allScores");
-        allScores = JSON.parse(allScores);
-        console.log(allScores)
-        if (allScores !== null) {
-
-            for (var i = 0; i < allScores.length; i++) {
-                var createLi = document.createElement("li");
-                createLi.textContent = allScores[i].username + " " + allScores[i].score;
-                leaderBody.appendChild(createLi);
-
-            }
-        }
-
         // Hide the Game Update modal
         $("#modalGameUpdate").modal("hide");
 
