@@ -400,7 +400,8 @@ $(document).ready(function () {
         function leaderBoardUpdate() {
             // Clear the previous table
             $("#leaderBody").html("");
-
+            
+            
             var finalScore = {
                 username: userName,
                 score: tries
@@ -423,15 +424,52 @@ $(document).ready(function () {
             var allScores = localStorage.getItem("allScores");
             allScores = JSON.parse(allScores);
             console.log(allScores)
+            
+            //  **************** Working list ************
+            // if (allScores !== null) {
+
+            //     for (var i = 0; i < allScores.length; i++) {
+            //         var createLi = document.createElement("li");
+            //         createLi.textContent = allScores[i].username + " " + allScores[i].score;
+            //         leaderBody.appendChild(createLi);
+            //         $("li").addClass("alignLi");
+            //     }
+            // }
+            //  **************** End Working list ************
+            
+            // Create table
+            var table = $('<table>').addClass('table');
+            var tr = $('<tr>');
+            $('<th>Username</th>').appendTo(tr);
+            $('<th>Tries</th>').appendTo(tr);
+            tr.appendTo(table);
+
+            // ************ Creates a column with usernames
+            // if (allScores !== null) {
+            //     var tr = ('<tr>');
+            //     for (var i = 0; i < allScores.length; i++) {
+            //         var row = $('<tr>').addClass("row").text(allScores[i].username)
+            //         $("#row").append("<td>")
+            //         table.append(row);
+            //     }
+            // }
             if (allScores !== null) {
-
-                for (var i = 0; i < allScores.length; i++) {
-                    var createLi = document.createElement("li");
-                    createLi.textContent = allScores[i].username + " " + allScores[i].score;
-                    leaderBody.appendChild(createLi);
-
+                
+                for (var r = 0; r < allScores.length; r++) {
+                    var trNew = $('<tr>');  
+                    var tdNewUser = $('<td>');
+                    var tdNewTries = $('<td>');
+                    console.log('Append a td');
+                    // $('<td>Username</td>').appendTo(trNew);
+                    trNew.append(tdNewUser);
+                    tdNewUser.text(allScores[r].username);
+                    trNew.append(tdNewTries);
+                    tdNewTries.text(allScores[r].score);
+                    // table.append(trNew);
+                    trNew.appendTo(table);
                 }
             }
+            $("#leaderBody").append(table);
         }
     
     // ********************************
@@ -676,7 +714,7 @@ $(document).ready(function () {
 
     // Show leader board
     $("#leaderButton").on("click", function () {
-       
+
         // Hide the Game Update modal
         $("#modalGameUpdate").modal("hide");
 

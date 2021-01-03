@@ -42,6 +42,11 @@ label {
     margin-top: 10px;
 }
 
+#instButton {
+    background-color: blue;
+    color: white;
+}
+
 .btn-lg:hover {
     background-color: rgb(253, 218, 161);
     color: #555;
@@ -68,6 +73,16 @@ label {
 
 #game {
     margin-top: 50px;
+}
+
+.localLeader {
+    display: table;
+}
+
+.alignLi {
+    list-style: none;
+    text-align: left !important;
+    padding-left: 100px;
 }
 
 /* Makes playing area responsive to smaller screens */
