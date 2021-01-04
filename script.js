@@ -131,6 +131,20 @@ $(document).ready(function () {
     // allVariablesInfo()
 };
 
+    // Shuffles the elements of the array
+    function shuffleArray(array) {
+        /*******************************************
+         * Randomize array element order in-place. *
+         * Using Durstenfeld shuffle algorithm.    *
+         *******************************************/
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    };
+
     // Use the API to get the URL to the GIFs used on the card's front
     function getGifURL() {
         // Empty array with URL of cards
@@ -180,7 +194,7 @@ $(document).ready(function () {
             }
 
             // Randomize the positions of the cardsArray
-            // shuffleArray(cardsArray);
+            shuffleArray(cardsArray);
 
             // Show the BACK of the cards
             displayCards();
@@ -397,16 +411,19 @@ $(document).ready(function () {
             }
         };
 
-        function leaderBoardUpdate() {
+        function leaderBoardUpdate(thisMode) {
             // Clear the previous table
             $("#leaderBody").html("");
             
-            
+            // Todo: Mode is undefined
+            console.log("And the mode is: " + thisMode);
+
             var finalScore = {
                 username: userName,
-                score: tries
+                score: tries,
+                time: time,
+                level: level
             }
-            // console.log("this is the final score", finalScore);
 
             // Stores the scores in localStorage
             var allScores = localStorage.getItem("allScores");
@@ -425,51 +442,37 @@ $(document).ready(function () {
             allScores = JSON.parse(allScores);
             console.log(allScores)
             
-            //  **************** Working list ************
-            // if (allScores !== null) {
+        switch (thisMode) {
+            case 'easy':
+                break;
+            default:
+                // Create table
+                var table = $('<table>').addClass('table');
+                var tr = $('<tr>');
+                $('<th>Username</th>').appendTo(tr);
+                $('<th>Tries</th>').appendTo(tr);
+                tr.appendTo(table);
 
-            //     for (var i = 0; i < allScores.length; i++) {
-            //         var createLi = document.createElement("li");
-            //         createLi.textContent = allScores[i].username + " " + allScores[i].score;
-            //         leaderBody.appendChild(createLi);
-            //         $("li").addClass("alignLi");
-            //     }
-            // }
-            //  **************** End Working list ************
-            
-            // Create table
-            var table = $('<table>').addClass('table');
-            var tr = $('<tr>');
-            $('<th>Username</th>').appendTo(tr);
-            $('<th>Tries</th>').appendTo(tr);
-            tr.appendTo(table);
-
-            // ************ Creates a column with usernames
-            // if (allScores !== null) {
-            //     var tr = ('<tr>');
-            //     for (var i = 0; i < allScores.length; i++) {
-            //         var row = $('<tr>').addClass("row").text(allScores[i].username)
-            //         $("#row").append("<td>")
-            //         table.append(row);
-            //     }
-            // }
-            if (allScores !== null) {
-                
-                for (var r = 0; r < allScores.length; r++) {
-                    var trNew = $('<tr>');  
-                    var tdNewUser = $('<td>');
-                    var tdNewTries = $('<td>');
-                    console.log('Append a td');
-                    // $('<td>Username</td>').appendTo(trNew);
-                    trNew.append(tdNewUser);
-                    tdNewUser.text(allScores[r].username);
-                    trNew.append(tdNewTries);
-                    tdNewTries.text(allScores[r].score);
-                    // table.append(trNew);
-                    trNew.appendTo(table);
+                // Add usernames and scores
+                if (allScores !== null) {
+                    
+                    for (var r = 0; r < allScores.length; r++) {
+                        var trNew = $('<tr>');  
+                        var tdNewUser = $('<td>');
+                        var tdNewTries = $('<td>');
+                        console.log('Append a td');
+                        // $('<td>Username</td>').appendTo(trNew);
+                        trNew.append(tdNewUser);
+                        tdNewUser.text(allScores[r].username);
+                        trNew.append(tdNewTries);
+                        tdNewTries.text(allScores[r].score);
+                        // table.append(trNew);
+                        trNew.appendTo(table);
+                    }
                 }
+                $("#leaderBody").append(table);
+                break;
             }
-            $("#leaderBody").append(table);
         }
     
     // ********************************
@@ -558,7 +561,7 @@ $(document).ready(function () {
                 // Update the game stats
                 updateStats();
 
-            }, 500); // Wait this many miliseconds after the second card is picked
+            }, 1500); // Wait this many miliseconds after the second card is picked
 
         }
 
@@ -567,6 +570,7 @@ $(document).ready(function () {
     // Player selects play mode
     $(".btnPlay").on("click", function (e) {
         e.preventDefault();
+
 
         // If player has not entered name or country show alert message
         if ($('#nameInput').val() === "") {
@@ -588,6 +592,7 @@ $(document).ready(function () {
 
         // Get the mode from the button selected
         mode = this.id;
+
 
         switch (mode) {
             // EASY mode
@@ -639,6 +644,7 @@ $(document).ready(function () {
 
                 break;
         };
+
 
     });
 
